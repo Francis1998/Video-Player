@@ -3,7 +3,7 @@ import main.java.view.display.VideoAuthoringView;
 import javax.swing.*;
 import java.awt.*;
 
-public class VedioDisplayer {
+public class VideoDisplayer {
     public static void main(String[] args){
         JFrame frame = new JFrame("project");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
