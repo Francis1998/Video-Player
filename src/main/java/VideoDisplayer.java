@@ -9,7 +9,7 @@ public class VideoDisplayer {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         var pane = frame.getContentPane();
         var video = new VideoAuthoringView();
-        video.setPreferredSize(new Dimension(600, 500));
+        video.setPreferredSize(new Dimension(530, 410));
         pane.add(video);
         frame.pack();
         frame.setVisible(true);

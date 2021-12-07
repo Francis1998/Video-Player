@@ -24,9 +24,12 @@ public class ActionView extends BaseViewGroup {
     }
 
     public void createUI(){
-        this.playButton = new JButton(Constants.play);
-        this.pauseButton = new JButton(Constants.pause);
-        this.stopButton = new JButton(Constants.stop);
+        Icon playIcon =  scaleImage(new ImageIcon(Constants.playPicFilePath), 50, 50);
+        Icon pauseIcon = scaleImage(new ImageIcon(Constants.pausePicFilePath), 50, 50);
+        Icon stopIcon = scaleImage(new ImageIcon(Constants.stopPicFilePath), 50, 50);
+        this.playButton = new JButton(playIcon);
+        this.pauseButton = new JButton(pauseIcon);
+        this.stopButton = new JButton(stopIcon);
         this.importPrimary = new JButton(Constants.importP);
         this.playButton.addMouseListener(this);
         this.pauseButton.addMouseListener(this);
@@ -65,6 +68,24 @@ public class ActionView extends BaseViewGroup {
         }
     }
 
+    public ImageIcon scaleImage(ImageIcon icon, int w, int h)
+    {
+        int nw = icon.getIconWidth();
+        int nh = icon.getIconHeight();
 
+        if(icon.getIconWidth() > w)
+        {
+            nw = w;
+            nh = (nw * icon.getIconHeight()) / icon.getIconWidth();
+        }
+
+        if(nh > h)
+        {
+            nh = h;
+            nw = (icon.getIconWidth() * nh) / icon.getIconHeight();
+        }
+
+        return new ImageIcon(icon.getImage().getScaledInstance(nw, nh, Image.SCALE_DEFAULT));
+    }
 
 }

@@ -8,15 +8,17 @@ import java.awt.*;
 public class VideoAuthoringView extends JPanel {
     PrimaryVideoDisplayView mPrimaryVideoDisplayView;
     ButtonControlView mButtonControlView;
-
+    FrameNumView mFrameNumView;
     public VideoAuthoringView() {
         super();
-        this.setBackground(Color.GREEN);
+        this.setBackground(Color.gray);
         mButtonControlView = new ButtonControlView();
+        mFrameNumView = new FrameNumView();
         mPrimaryVideoDisplayView = new PrimaryVideoDisplayView();
         mPrimaryVideoDisplayView.setPreferredSize(new Dimension(400, 350));
 
         this.add(mPrimaryVideoDisplayView, BorderLayout.CENTER);
         this.add(mButtonControlView, BorderLayout.EAST);
+        this.add(mFrameNumView, BorderLayout.SOUTH);
     }
 }
