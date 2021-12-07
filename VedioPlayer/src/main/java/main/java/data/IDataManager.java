@@ -16,8 +16,6 @@ public interface IDataManager {
 
     void setPrimaryVideo(String filename);
 
-    void openSecondaryVideo(String filename);
-
     String getFilenameByFrameNo(int frame);
 
     Object getLinkListByFile(String filename) throws FileNotFoundException;
