@@ -91,6 +91,7 @@ public class PrimaryVideoDisplayPresenter extends BasePresenter {
 //        } else if (event.newValue == 30){
 //            System.out.println(System.currentTimeMillis() - startTime);
 //        }
+        DataManager.getInstance().currFrame = event.newValue;
         this.mView.showRGB(filename);
 //        System.out.println("this is show rgb");
 //        String filename = ;
