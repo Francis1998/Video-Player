@@ -2,6 +2,7 @@ package main.java.presenter.display;
 
 import com.google.common.eventbus.Subscribe;
 import main.java.data.DataManager;
+import main.java.event.JumpEvent;
 import main.java.event.PauseEvent;
 import main.java.event.PrimarySlideEvent;
 import main.java.event.StartEvent;
@@ -73,6 +74,19 @@ public class PrimaryVideoDisplayPresenter extends BasePresenter {
         DataManager.getInstance().is_audio_playing = false;
         DataManager.getInstance().audio_play_line.stop();
         DataManager.getInstance().audio_cur_frame = DataManager.getInstance().audio_play_line.getFramePosition();
+    }
+
+    @Subscribe
+    public void soundOnJump(JumpEvent event) {
+        boolean is_playing = DataManager.getInstance().is_audio_playing;
+        if (is_playing) {
+            DataManager.getInstance().is_audio_playing = false;
+        }
+        DataManager.getInstance().initAudio();
+        DataManager.getInstance().audio_cur_frame = event.targetFrame * (DataManager.getInstance().bytes_per_video_frame / 4);
+        if (is_playing) {
+            DataManager.getInstance().is_audio_playing = true;
+        }
     }
 
     public void onMouseClicked() {

@@ -53,14 +53,6 @@ public class VideoDisplayView extends BaseViewGroup {
         System.out.println("rgb repaint success");
     }
 
-//    public void playSound(int frame_no) {
-//        DataManager.getInstance().audio
-//
-//            audioOutput.write(abData, 0, nBytesRead);
-//
-//        audioOutput.drain();
-//    }
-
     @Override
     public void mouseClicked(MouseEvent e) {
         super.mouseClicked(e);
@@ -77,7 +69,7 @@ public class VideoDisplayView extends BaseViewGroup {
                 if (e.getX() >= l.box.x && e.getX() <= l.box.x + l.box.width && e.getY() >= l.box.y && e.getY() <= l.box.y + l.box.height){
 
                     DataManager.getInstance().setPrimaryVideo(l.targetFilePathBase);
-                    DataManager.getInstance().initAudio();
+                    // DataManager.getInstance().initAudio();
                     EventBusCenter.post(new PrimarySlideEvent(l.targetFrame));
                     EventBusCenter.post(new JumpEvent(l.targetFilePathBase, l.targetFrame));
                     DataManager.getInstance().currFrame = l.targetFrame;
