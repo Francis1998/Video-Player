@@ -3,6 +3,7 @@ package main.java.view.display;
 import main.java.constants.DimensionConstants;
 import main.java.data.DataManager;
 import main.java.data.Link;
+import main.java.event.JumpEvent;
 import main.java.event.PrimarySlideEvent;
 import main.java.eventbus.EventBusCenter;
 import main.java.presenter.display.VideoDisplayPresenter;
@@ -76,6 +77,7 @@ public class VideoDisplayView extends BaseViewGroup {
                     DataManager.getInstance().setPrimaryVideo(l.targetFilePathBase);
                     DataManager.getInstance().initAudio();
                     EventBusCenter.post(new PrimarySlideEvent(l.targetFrame));
+                    EventBusCenter.post(new JumpEvent(l.targetFilePathBase, l.targetFrame));
                     DataManager.getInstance().currFrame = l.targetFrame;
                 }
             }
