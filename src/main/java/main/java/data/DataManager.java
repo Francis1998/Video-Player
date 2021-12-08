@@ -41,7 +41,9 @@ public class DataManager implements IDataManager {
     // initialize when loading/changing videos
     public AudioInputStream audio_stream;
     public byte[] audio_data = new byte[44100*4*60*5];
+    public AudioFormat audioFormat;
     public SourceDataLine audio_play_line;
+    public int audio_freq_slow = 3000;
 
     public List<Link> LinkData = null;
     public HashMap<String, List<Link>> frameLinkMap = new HashMap<>();
@@ -155,7 +157,8 @@ public class DataManager implements IDataManager {
             System.out.println("load success");
 
             // update source data line
-            AudioFormat audioFormat = audio_stream.getFormat();
+            AudioFormat formatIn = audio_stream.getFormat();
+            audioFormat=new AudioFormat(formatIn.getSampleRate()-audio_freq_slow, formatIn.getSampleSizeInBits(), formatIn.getChannels(), true, formatIn.isBigEndian());
             DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
             audio_play_line = (SourceDataLine) AudioSystem.getLine(info);
             audio_play_line.open(audioFormat);

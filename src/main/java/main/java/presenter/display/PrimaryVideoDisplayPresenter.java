@@ -58,9 +58,8 @@ public class PrimaryVideoDisplayPresenter extends BasePresenter {
                         DataManager.getInstance().audio_play_line.stop();
                     } else {
                         if (!DataManager.getInstance().audio_play_line.isOpen()) {
-                            AudioFormat audioFormat = DataManager.getInstance().audio_stream.getFormat();
                             try {
-                                DataManager.getInstance().audio_play_line.open(audioFormat);
+                                DataManager.getInstance().audio_play_line.open(DataManager.getInstance().audioFormat);
                             } catch (Exception e) {
                                 System.out.println("Exception thrown:" + e);
                             }
