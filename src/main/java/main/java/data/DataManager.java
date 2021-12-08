@@ -39,7 +39,7 @@ public class DataManager implements IDataManager {
     private String audioExtension = ".wav";
     public int bytes_per_video_frame = 4*44100/30;
     // initialize when loading/changing videos
-    AudioInputStream audio_stream;
+    public AudioInputStream audio_stream;
     public byte[] audio_data = new byte[44100*4*60*5];
     public SourceDataLine audio_play_line;
 
