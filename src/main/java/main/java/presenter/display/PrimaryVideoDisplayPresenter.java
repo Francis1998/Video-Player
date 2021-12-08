@@ -92,7 +92,7 @@ public class PrimaryVideoDisplayPresenter extends BasePresenter {
 //            System.out.println(System.currentTimeMillis() - startTime);
 //        }
         this.mView.showRGB(filename);
-        System.out.println("this is show rgb");
+//        System.out.println("this is show rgb");
 //        String filename = ;
 //        showRGB(filename);
     }

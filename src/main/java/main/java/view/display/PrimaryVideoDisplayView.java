@@ -18,7 +18,7 @@ public class PrimaryVideoDisplayView extends BaseViewGroup {
 
     public PrimaryVideoDisplayView() {
         super();
-        this.setBackground(Color.BLUE);
+        this.setBackground(Color.gray);
 //        this.setPreferredSize(new Dimension(450, 400));
         mPresenter = new PrimaryVideoDisplayPresenter(this);
         mVideoDisplayView = new VideoDisplayView(1);
