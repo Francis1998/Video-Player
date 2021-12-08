@@ -38,15 +38,9 @@ public class PrimaryVideoDisplayView extends BaseViewGroup {
         mVideoDisplayView.showRGB(filename);
     }
 
-    public void playSound(AudioInputStream audioStream){
-        try {
-            mVideoDisplayView.playSound(audioStream);
-        } catch (LineUnavailableException e1) {
-            System.out.println("Exception thrown  :" + e1);
-        } catch (IOException e2) {
-            System.out.println("Exception thrown  :" + e2);
-        }
-    }
+//    public void playSound(int frame_no){
+//        mVideoDisplayView.playSound(frame_no);
+//    }
 
     @Override
     public void mouseClicked(MouseEvent e) {

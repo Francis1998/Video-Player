@@ -50,25 +50,13 @@ public class VideoDisplayView extends BaseViewGroup {
         this.repaint();
     }
 
-    public void playSound(AudioInputStream audioStream) throws LineUnavailableException, IOException {
-        AudioFormat audioFormat = audioStream.getFormat();
-        DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
-        SourceDataLine audioOutput = (SourceDataLine) AudioSystem.getLine(info);
-        audioOutput.open(audioFormat);
-        audioOutput.start();
-
-        int nBytesRead = 0;
-
-        byte[] abData = new byte[AUDIO_BUFFER];
-
-        nBytesRead = audioStream.read(abData, 0, abData.length);
-        if (nBytesRead >= 0) {
-            audioOutput.write(abData, 0, nBytesRead);
-        }
-
-        audioOutput.drain();
-        audioOutput.close();
-    }
+//    public void playSound(int frame_no) {
+//        DataManager.getInstance().audio
+//
+//            audioOutput.write(abData, 0, nBytesRead);
+//
+//        audioOutput.drain();
+//    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -86,6 +74,7 @@ public class VideoDisplayView extends BaseViewGroup {
                 if (e.getX() >= l.box.x && e.getX() <= l.box.x + l.box.width && e.getY() >= l.box.y && e.getY() <= l.box.y + l.box.height){
 
                     DataManager.getInstance().setPrimaryVideo(l.targetFilePathBase);
+                    DataManager.getInstance().initAudio();
                     EventBusCenter.post(new PrimarySlideEvent(l.targetFrame));
                     DataManager.getInstance().currFrame = l.targetFrame;
                 }

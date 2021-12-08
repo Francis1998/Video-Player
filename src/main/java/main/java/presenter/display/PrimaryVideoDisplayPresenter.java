@@ -36,14 +36,8 @@ public class PrimaryVideoDisplayPresenter extends BasePresenter {
 
     @Subscribe
     public void play_sound(PrimarySlideEvent event) {
-        try {
-            AudioInputStream sound = DataManager.getInstance().getSound(event.newValue);
-            this.mView.playSound(sound);
-        } catch (UnsupportedAudioFileException e1) {
-            System.out.println("Exception thrown  :" + e1);
-        } catch (IOException e2) {
-            System.out.println("Exception thrown  :" + e2);
-        }
+        // this.mView.playSound(event.newValue);
+        DataManager.getInstance().playSound(event.newValue);
     }
 
     public void onMouseClicked() {

@@ -24,6 +24,7 @@ public class ActionPresenter extends BasePresenter {
     public void onOpenFile(File file) {
         DataManager.getInstance().getLinkListByFile(file.getAbsolutePath());
         DataManager.getInstance().setPrimaryVideo(DataManager.getInstance().LinkData.get(0).sourceFilePathBase);
+        DataManager.getInstance().initAudio();
         EventBusCenter.post(new PrimarySlideEvent(1));
 //        } else {
 //            DataManager.getInstance().openSecondaryVideo(file.getAbsolutePath());
