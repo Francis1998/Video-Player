@@ -53,12 +53,13 @@ public class ActionPresenter extends BasePresenter {
                     DataManager.getInstance().currFrame = 1;
                     timer.cancel();
                 }
-//                System.out.println(DataManager.getInstance().currFrame + "    "+ DataManager.getInstance().audio_play_line.getFramePosition()/(DataManager.getInstance().bytes_per_video_frame/4));
-                if (DataManager.getInstance().currFrame - DataManager.getInstance().audio_play_line.getFramePosition()/(DataManager.getInstance().bytes_per_video_frame/4) >= 3){
+                System.out.println(DataManager.getInstance().currFrame + "    "+ (DataManager.getInstance().audio_play_line.getFramePosition()/(DataManager.getInstance().bytes_per_video_frame/4)+DataManager.getInstance().audio_video_offset));
+                // System.out.println("audio video offset: " + DataManager.getInstance().audio_video_offset);
+                if (DataManager.getInstance().currFrame - (DataManager.getInstance().audio_play_line.getFramePosition()/(DataManager.getInstance().bytes_per_video_frame/4) + DataManager.getInstance().audio_video_offset) >= 3){
                     delay = 10L;
                     period = 140L;
                     System.out.println("voice slow");
-                } else if (DataManager.getInstance().audio_play_line.getFramePosition()/(DataManager.getInstance().bytes_per_video_frame/4) - DataManager.getInstance().currFrame >= 1){
+                } else if ((DataManager.getInstance().audio_play_line.getFramePosition()/(DataManager.getInstance().bytes_per_video_frame/4) + DataManager.getInstance().audio_video_offset) - DataManager.getInstance().currFrame >= 1){
                     delay = 0L;
                     period = 1L;
                     System.out.println("voice fast");
