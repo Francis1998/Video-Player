@@ -120,14 +120,16 @@ public class DataManager implements IDataManager {
 
     public void listLinkToMap(){
         for(Link link:LinkData){
-            for (int i = link.sourceFrame; i <= link.sourceFrame + link.duration; i ++){
-                String pathFrameKey = link.sourceFilePathBase + i;
+            if (link.targetFrame > 0 && link.sourceFrame > 0){
+                for (int i = link.sourceFrame; i <= link.sourceFrame + link.duration; i ++){
+                    String pathFrameKey = link.sourceFilePathBase + i;
 //                System.out.println("pathkey: " + pathFrameKey);
-                if (frameLinkMap.containsKey(pathFrameKey)){
-                    frameLinkMap.get(pathFrameKey).add(link);
-                } else {
-                    frameLinkMap.put(pathFrameKey, new ArrayList<>());
-                    frameLinkMap.get(pathFrameKey).add(link);
+                    if (frameLinkMap.containsKey(pathFrameKey)){
+                        frameLinkMap.get(pathFrameKey).add(link);
+                    } else {
+                        frameLinkMap.put(pathFrameKey, new ArrayList<>());
+                        frameLinkMap.get(pathFrameKey).add(link);
+                    }
                 }
             }
         }
