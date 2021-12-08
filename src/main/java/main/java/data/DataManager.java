@@ -35,11 +35,11 @@ public class DataManager implements IDataManager {
 
     // for audio
     private String audioExtension = ".wav";
-    int bytes_per_video_frame = 4*44100/30;
+    public int bytes_per_video_frame = 4*44100/30;
     // initialize when loading/changing videos
     AudioInputStream audio_stream;
     byte[] audio_data = new byte[44100*4*60*5];
-    SourceDataLine audio_play_line;
+    public SourceDataLine audio_play_line;
 
     public List<Link> LinkData = null;
     public HashMap<String, List<Link>> frameLinkMap = new HashMap<>();

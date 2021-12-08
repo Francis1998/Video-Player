@@ -18,7 +18,8 @@ public class ActionPresenter extends BasePresenter {
     Timer timer;
 //    int count = 1;
     int number = 9000;
-
+    long period = 33L;
+    long delay = 0;
     public ActionPresenter(ActionView view){
         super();
         setView(view);
@@ -41,21 +42,29 @@ public class ActionPresenter extends BasePresenter {
             timer.cancel();
         }
         timer = new Timer();
+
         TimerTask task = new TimerTask() {
 //            int count = 1;
             @Override
             public void run() {
                 if(DataManager.getInstance().currFrame<=number){
-//                    System.out.println(DataManager.getInstance().currFrame);
                     EventBusCenter.post(new PrimarySlideEvent(DataManager.getInstance().currFrame));
                 } else {
                     DataManager.getInstance().currFrame = 1;
                     timer.cancel();
                 }
+                System.out.println(DataManager.getInstance().currFrame + "    "+ DataManager.getInstance().audio_play_line.getFramePosition()/(DataManager.getInstance().bytes_per_video_frame/4));
+                if (DataManager.getInstance().currFrame - DataManager.getInstance().audio_play_line.getFramePosition()/(DataManager.getInstance().bytes_per_video_frame/4) >= 1){
+                    delay = 33L;
+                    period = 33L;
+                } else if (DataManager.getInstance().audio_play_line.getFramePosition()/(DataManager.getInstance().bytes_per_video_frame/4) - DataManager.getInstance().currFrame >= 1){
+                    delay = 0L;
+                    period = 0L;
+                }
                 DataManager.getInstance().currFrame++;
             }
         };
-        timer.schedule(task, 0,33L);
+        timer.schedule(task, delay, period);
     }
 
     @Subscribe
