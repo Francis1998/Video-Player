@@ -7,10 +7,8 @@ import main.java.constants.Constants;
 
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import javax.sound.sampled.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -34,6 +32,15 @@ public class DataManager implements IDataManager {
 //    private String secondaryVideoPathBase = "";
     private String suffixExtension = ".rgb";
     private int suffixLength = 8;
+
+    // for audio
+    private String audioExtension = ".wav";
+    int bytes_per_video_frame = 4*44100/30;
+    // initialize when loading/changing videos
+    AudioInputStream audio_stream;
+    byte[] audio_data = new byte[44100*4*60*5];
+    SourceDataLine audio_play_line;
+
     public List<Link> LinkData = null;
     public HashMap<String, List<Link>> frameLinkMap = new HashMap<>();
     public int currFrame = 1;
@@ -100,7 +107,6 @@ public class DataManager implements IDataManager {
         return LinkData;
     }
 
-
     @Override
     public String getFilenameByFrameNo(int frame) {
         String frameString = Integer.toString(frame);
@@ -134,4 +140,44 @@ public class DataManager implements IDataManager {
             }
         }
     }
+
+    public void initAudio() {
+        String audio_path = primaryVideoPathBase + audioExtension;
+
+        try {
+            // get audio stream
+            audio_stream = AudioSystem.getAudioInputStream(new File(audio_path));
+            // read audio stream
+            audio_stream.read(audio_data, 0, audio_data.length);
+            // update source data line
+            AudioFormat audioFormat = audio_stream.getFormat();
+            DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
+//            if (audio_play_line.isOpen()) {
+//                audio_play_line.close();
+//            }
+            audio_play_line = (SourceDataLine) AudioSystem.getLine(info);
+            audio_play_line.open(audioFormat);
+            audio_play_line.start();
+        } catch (Exception e) {
+            System.out.println("Exception thrown:" + e);
+        }
+    }
+
+    public void playSound(int frame_no) {
+        audio_play_line.write(audio_data, frame_no*bytes_per_video_frame, bytes_per_video_frame);
+        audio_play_line.drain();
+    }
+
+//    public AudioInputStream getSound(int frame_no) throws UnsupportedAudioFileException, IOException {
+//        String sound_file = primaryVideoPathBase + audioExtension;
+//
+//        AudioInputStream sound = AudioSystem.getAudioInputStream(new File(sound_file));
+//        AudioFormat format = sound.getFormat();
+//
+//        long bytes_to_skip = (int) format.getFrameSize() * ((int)format.getFrameRate()) * (frame_no-1) / 30;
+//
+//        sound.skip(bytes_to_skip);
+//
+//        return sound;
+//    }
 }
