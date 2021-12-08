@@ -2,10 +2,7 @@ package main.java.presenter.display;
 
 import com.google.common.eventbus.Subscribe;
 import main.java.data.DataManager;
-import main.java.event.JumpEvent;
-import main.java.event.PauseEvent;
-import main.java.event.PrimarySlideEvent;
-import main.java.event.StartEvent;
+import main.java.event.*;
 import main.java.presenter.base.BasePresenter;
 import main.java.view.display.PrimaryVideoDisplayView;
 
@@ -20,28 +17,50 @@ public class PrimaryVideoDisplayPresenter extends BasePresenter {
     public PrimaryVideoDisplayPresenter() {
         super();
     }
+
     public boolean isPause = false;
     public boolean isInitiated = false;
+    public boolean isStopped = false;
+    public boolean isJumped = false;
+    public JumpEvent jump_event;
+
     public PrimaryVideoDisplayPresenter(PrimaryVideoDisplayView view) {
         this();
         setView(view);
+
+        // Audio
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                DataManager.getInstance().is_audio_playing = true;
-                int cur_off = DataManager.getInstance().audio_cur_frame * DataManager.getInstance().bytes_per_video_frame;
+                int cur_off = 0;
                 int len = DataManager.getInstance().audio_data.length;
-                DataManager.getInstance().audio_play_line.start();
+
                 int off = 0;
-                int step = DataManager.getInstance().bytes_per_video_frame * 30;
-                while (DataManager.getInstance().is_audio_playing) {
-                    if (isPause){
-                        continue;
+                int step = DataManager.getInstance().bytes_per_video_frame*15;
+
+                while (true) {
+                    if (isJumped) {
+                        DataManager.getInstance().initAudio();
+                        cur_off = (jump_event.targetFrame-1) * (DataManager.getInstance().bytes_per_video_frame / 4);
+                        off = 0;
+                        isJumped = false;
                     }
-                    if (cur_off + off < len) {
-                        DataManager.getInstance().audio_play_line.write(DataManager.getInstance().audio_data, cur_off + off, step);
-                        DataManager.getInstance().audio_play_line.drain();
-                        off += step;
+
+                    if (isStopped) {
+                        cur_off = 0;
+                        off = 0;
+                        isStopped = false;
+                    }
+
+                    if (isPause) {
+                        DataManager.getInstance().audio_play_line.stop();
+                    } else {
+                        DataManager.getInstance().audio_play_line.start();
+                        if (cur_off + off < len) {
+                            DataManager.getInstance().audio_play_line.write(DataManager.getInstance().audio_data, cur_off + off, step);
+                            DataManager.getInstance().audio_play_line.drain();
+                            off += step;
+                        }
                     }
                 }
             }
@@ -67,45 +86,30 @@ public class PrimaryVideoDisplayPresenter extends BasePresenter {
 //        showRGB(filename);
     }
 
-//    @Subscribe
-//    public void play_sound(PrimarySlideEvent event) {
-//        // this.mView.playSound(event.newValue);
-//        DataManager.getInstance().playSound(event.newValue);
-//    }
-
     @Subscribe
     public void soundOnStart(StartEvent event) {
-        // System.out.println("Video frame:" + DataManager.getInstance().currFrame);
-        // System.out.println("Sound frame:" + DataManager.getInstance().audio_play_line.getFramePosition());
         if (!isInitiated){
             thread.start();
             isInitiated = true;
         }
         isPause = false;
-
-
     }
 
     @Subscribe
     public void soundOnPause(PauseEvent event) {
-        DataManager.getInstance().is_audio_playing = false;
         isPause = true;
-        DataManager.getInstance().audio_play_line.stop();
-        DataManager.getInstance().audio_cur_frame = DataManager.getInstance().audio_play_line.getFramePosition();
+    }
 
+    @Subscribe
+    public void soundOnStop(StopEvent event) {
+        isStopped = true;
+        isPause = true;
     }
 
     @Subscribe
     public void soundOnJump(JumpEvent event) {
-        boolean is_playing = DataManager.getInstance().is_audio_playing;
-        if (is_playing) {
-            DataManager.getInstance().is_audio_playing = false;
-        }
-        DataManager.getInstance().initAudio();
-        DataManager.getInstance().audio_cur_frame = event.targetFrame * (DataManager.getInstance().bytes_per_video_frame / 4);
-        if (is_playing) {
-            DataManager.getInstance().is_audio_playing = true;
-        }
+        isJumped = true;
+        jump_event = event;
     }
 
     public void onMouseClicked() {

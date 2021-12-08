@@ -39,11 +39,9 @@ public class DataManager implements IDataManager {
     private String audioExtension = ".wav";
     public int bytes_per_video_frame = 4*44100/30;
     // initialize when loading/changing videos
-    public int audio_cur_frame = 0;
     AudioInputStream audio_stream;
     public byte[] audio_data = new byte[44100*4*60*5];
     public SourceDataLine audio_play_line;
-    public boolean is_audio_playing = false;
 
     public List<Link> LinkData = null;
     public HashMap<String, List<Link>> frameLinkMap = new HashMap<>();
@@ -146,45 +144,23 @@ public class DataManager implements IDataManager {
     }
 
     public void initAudio() {
-        audio_cur_frame = 0;
         String audio_path = primaryVideoPathBase + audioExtension;
 
         try {
             // get audio stream
             audio_stream = AudioSystem.getAudioInputStream(new File(audio_path));
+
             // read audio stream
             audio_stream.read(audio_data, 0, audio_data.length);
             System.out.println("load success");
+
             // update source data line
             AudioFormat audioFormat = audio_stream.getFormat();
             DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
-//            if (audio_play_line.isOpen()) {
-//                audio_play_line.close();
-//            }
             audio_play_line = (SourceDataLine) AudioSystem.getLine(info);
             audio_play_line.open(audioFormat);
-            // audio_play_line.start();
         } catch (Exception e) {
             System.out.println("Exception thrown:" + e);
         }
     }
-
-    // @Subscribe
-    public void playSound(int frame_no) {
-        audio_play_line.write(audio_data, (frame_no-1)*bytes_per_video_frame, bytes_per_video_frame);
-        audio_play_line.drain();
-    }
-
-//    public AudioInputStream getSound(int frame_no) throws UnsupportedAudioFileException, IOException {
-//        String sound_file = primaryVideoPathBase + audioExtension;
-//
-//        AudioInputStream sound = AudioSystem.getAudioInputStream(new File(sound_file));
-//        AudioFormat format = sound.getFormat();
-//
-//        long bytes_to_skip = (int) format.getFrameSize() * ((int)format.getFrameRate()) * (frame_no-1) / 30;
-//
-//        sound.skip(bytes_to_skip);
-//
-//        return sound;
-//    }
 }
