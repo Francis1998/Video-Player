@@ -6,6 +6,7 @@ import main.java.event.*;
 import main.java.presenter.base.BasePresenter;
 import main.java.view.display.PrimaryVideoDisplayView;
 
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
@@ -47,6 +48,7 @@ public class PrimaryVideoDisplayPresenter extends BasePresenter {
                     }
 
                     if (isStopped) {
+                        DataManager.getInstance().audio_play_line.close();
                         cur_off = 0;
                         off = 0;
                         isStopped = false;
@@ -55,6 +57,13 @@ public class PrimaryVideoDisplayPresenter extends BasePresenter {
                     if (isPause) {
                         DataManager.getInstance().audio_play_line.stop();
                     } else {
+                        if (!DataManager.getInstance().audio_play_line.isOpen()) {
+                            try {
+                                DataManager.getInstance().audio_play_line.open(DataManager.getInstance().audioFormat);
+                            } catch (Exception e) {
+                                System.out.println("Exception thrown:" + e);
+                            }
+                        }
                         DataManager.getInstance().audio_play_line.start();
                         if (cur_off + off < len) {
                             DataManager.getInstance().audio_play_line.write(DataManager.getInstance().audio_data, cur_off + off, step);
