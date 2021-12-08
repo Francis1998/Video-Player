@@ -13,6 +13,7 @@ public class VideoDisplayer {
         pane.add(video);
         frame.pack();
         frame.setVisible(true);
+        frame.setTitle("Hypervideo Player");
     }
 
 }

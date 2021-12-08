@@ -43,6 +43,7 @@ public class VideoDisplayView extends BaseViewGroup {
         label = new JLabel(imageIconOne);
         label.addMouseListener(this);
         add(label, BorderLayout.CENTER);
+
     }
 
     public void showRGB(String filename) {

@@ -11,7 +11,7 @@ public class VideoAuthoringView extends JPanel {
     FrameNumView mFrameNumView;
     public VideoAuthoringView() {
         super();
-        this.setBackground(Color.gray);
+        this.setBackground(Color.lightGray);
         mButtonControlView = new ButtonControlView();
         mFrameNumView = new FrameNumView();
         mPrimaryVideoDisplayView = new PrimaryVideoDisplayView();
@@ -19,6 +19,6 @@ public class VideoAuthoringView extends JPanel {
 
         this.add(mPrimaryVideoDisplayView, BorderLayout.CENTER);
         this.add(mButtonControlView, BorderLayout.EAST);
-        this.add(mFrameNumView, BorderLayout.SOUTH);
+        this.add(mFrameNumView, BorderLayout.EAST);
     }
 }

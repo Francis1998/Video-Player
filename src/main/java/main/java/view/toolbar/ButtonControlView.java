@@ -9,7 +9,7 @@ public class ButtonControlView extends JPanel {
     public ButtonControlView(){
         super();
         createUI();
-//        this.setBackground(Color.YELLOW);
+        this.setBackground(Color.lightGray);
     }
 
     public void createUI(){

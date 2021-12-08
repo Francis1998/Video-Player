@@ -13,11 +13,12 @@ public class FrameNumView extends JPanel {
         super();
         mPresenter = new FrameNumPresenter(this);
         this.setPreferredSize(new Dimension(82, 40));
-//        this.setBackground(Color.pink);
+        this.setBackground(Color.lightGray);
         txtField =new JTextField();
         txtField.setText(String.valueOf(DataManager.getInstance().currFrame));
         txtField.setPreferredSize(new Dimension(80, 38));
         txtField.setEditable(false);
+//        txtField.setBackground(Color.lightGray);
         this.add(txtField, BorderLayout.CENTER);
     }
     public void updateNum(Integer currFrame){

@@ -8,6 +8,7 @@ import main.java.event.StopEvent;
 import main.java.eventbus.EventBusCenter;
 import main.java.presenter.display.ActionPresenter;
 import main.java.view.base.BaseViewGroup;
+import main.java.view.display.FrameNumView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +21,7 @@ public class ActionView extends BaseViewGroup {
     JButton stopButton = null;
     JButton importPrimary = null;
     ActionPresenter mPresenter = null;
-
+//    FrameNumView mFrameNumView;
     public ActionView(){
         super();
         createUI();
@@ -32,6 +33,7 @@ public class ActionView extends BaseViewGroup {
         Icon playIcon =  scaleImage(new ImageIcon(Constants.playPicFilePath), 50, 50);
         Icon pauseIcon = scaleImage(new ImageIcon(Constants.pausePicFilePath), 50, 50);
         Icon stopIcon = scaleImage(new ImageIcon(Constants.stopPicFilePath), 50, 50);
+//        mFrameNumView = new FrameNumView();
         this.playButton = new JButton(playIcon);
         this.pauseButton = new JButton(pauseIcon);
         this.stopButton = new JButton(stopIcon);
@@ -46,6 +48,8 @@ public class ActionView extends BaseViewGroup {
         this.add(this.playButton, BorderLayout.CENTER);
         this.add(this.pauseButton, BorderLayout.CENTER);
         this.add(this.stopButton, BorderLayout.CENTER);
+//        this.add(mFrameNumView, BorderLayout.CENTER);
+        this.setBackground(Color.lightGray);
     }
 
     @Override
