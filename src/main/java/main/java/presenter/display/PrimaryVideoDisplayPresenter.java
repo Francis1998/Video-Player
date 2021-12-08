@@ -27,7 +27,7 @@ public class PrimaryVideoDisplayPresenter extends BasePresenter {
 
     @Subscribe
     public void init_load(PrimarySlideEvent event) {
-        System.out.println("this is showrgb");
+        System.out.println("this is show rgb");
         String filename = DataManager.getInstance().getFilenameByFrameNo(event.newValue);
         this.mView.showRGB(filename);
 //        String filename = ;

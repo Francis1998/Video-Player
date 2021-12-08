@@ -60,11 +60,10 @@ public class VideoDisplayView extends BaseViewGroup {
         int nBytesRead = 0;
 
         byte[] abData = new byte[AUDIO_BUFFER];
-        while (nBytesRead != -1) {
-            nBytesRead = audioStream.read(abData, 0, abData.length);
-            if (nBytesRead >= 0) {
-                audioOutput.write(abData, 0, nBytesRead);
-            }
+
+        nBytesRead = audioStream.read(abData, 0, abData.length);
+        if (nBytesRead >= 0) {
+            audioOutput.write(abData, 0, nBytesRead);
         }
 
         audioOutput.drain();
