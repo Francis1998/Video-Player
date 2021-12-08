@@ -53,13 +53,19 @@ public class ActionPresenter extends BasePresenter {
                     DataManager.getInstance().currFrame = 1;
                     timer.cancel();
                 }
-                System.out.println(DataManager.getInstance().currFrame + "    "+ DataManager.getInstance().audio_play_line.getFramePosition()/(DataManager.getInstance().bytes_per_video_frame/4));
-                if (DataManager.getInstance().currFrame - DataManager.getInstance().audio_play_line.getFramePosition()/(DataManager.getInstance().bytes_per_video_frame/4) >= 1){
-                    delay = 5L;
-                    period = 30L;
+//                System.out.println(DataManager.getInstance().currFrame + "    "+ DataManager.getInstance().audio_play_line.getFramePosition()/(DataManager.getInstance().bytes_per_video_frame/4));
+                if (DataManager.getInstance().currFrame - DataManager.getInstance().audio_play_line.getFramePosition()/(DataManager.getInstance().bytes_per_video_frame/4) >= 3){
+                    delay = 10L;
+                    period = 140L;
+                    System.out.println("voice slow");
                 } else if (DataManager.getInstance().audio_play_line.getFramePosition()/(DataManager.getInstance().bytes_per_video_frame/4) - DataManager.getInstance().currFrame >= 1){
                     delay = 0L;
-                    period = 25L;
+                    period = 1L;
+                    System.out.println("voice fast");
+                } else {
+                    delay = 0L;
+                    period = 32L;
+                    System.out.println("same voice");
                 }
 //                System.out.println(period);
                 DataManager.getInstance().currFrame++;
