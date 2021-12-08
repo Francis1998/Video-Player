@@ -46,9 +46,11 @@ public class VideoDisplayView extends BaseViewGroup {
     }
 
     public void showRGB(String filename) {
+        System.out.println(filename);
         ImgUtil.readImageRGB(filename, imgOne);
 
         this.repaint();
+        System.out.println("rgb repaint success");
     }
 
 //    public void playSound(int frame_no) {
