@@ -14,6 +14,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
+import java.io.IOException;
+
+import javax.sound.sampled.*;
 
 public class VideoDisplayView extends BaseViewGroup {
     VideoDisplayPresenter mPresenter;
@@ -21,6 +24,8 @@ public class VideoDisplayView extends BaseViewGroup {
     ImageIcon imageIconOne;
 
     Integer curFrame = 1;
+
+    int AUDIO_BUFFER = 4*44100/30; // one second
 
     JLabel label;
     public VideoDisplayView(Integer curFrame) {
@@ -43,6 +48,27 @@ public class VideoDisplayView extends BaseViewGroup {
         ImgUtil.readImageRGB(filename, imgOne);
 
         this.repaint();
+    }
+
+    public void playSound(AudioInputStream audioStream) throws LineUnavailableException, IOException {
+        AudioFormat audioFormat = audioStream.getFormat();
+        DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
+        SourceDataLine audioOutput = (SourceDataLine) AudioSystem.getLine(info);
+        audioOutput.open(audioFormat);
+        audioOutput.start();
+
+        int nBytesRead = 0;
+
+        byte[] abData = new byte[AUDIO_BUFFER];
+        while (nBytesRead != -1) {
+            nBytesRead = audioStream.read(abData, 0, abData.length);
+            if (nBytesRead >= 0) {
+                audioOutput.write(abData, 0, nBytesRead);
+            }
+        }
+
+        audioOutput.drain();
+        audioOutput.close();
     }
 
     @Override

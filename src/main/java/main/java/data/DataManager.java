@@ -7,6 +7,10 @@ import main.java.constants.Constants;
 
 import org.apache.commons.io.FileUtils;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -34,6 +38,10 @@ public class DataManager implements IDataManager {
 //    private String secondaryVideoPathBase = "";
     private String suffixExtension = ".rgb";
     private int suffixLength = 8;
+
+    // for audio
+    private String audioExtension = ".wav";
+
     public List<Link> LinkData = null;
     public HashMap<String, List<Link>> frameLinkMap = new HashMap<>();
     public int currFrame = 1;
@@ -100,7 +108,6 @@ public class DataManager implements IDataManager {
         return LinkData;
     }
 
-
     @Override
     public String getFilenameByFrameNo(int frame) {
         String frameString = Integer.toString(frame);
@@ -131,5 +138,21 @@ public class DataManager implements IDataManager {
                 }
             }
         }
+    }
+
+    public AudioInputStream getSound(int frame_no) throws UnsupportedAudioFileException, IOException {
+        String sound_file = primaryVideoPathBase + audioExtension;
+
+        AudioInputStream sound = AudioSystem.getAudioInputStream(new File(sound_file));
+        AudioFormat format = sound.getFormat();
+
+        long bytes_to_skip = (int) format.getFrameSize() * ((int)format.getFrameRate()) * (frame_no-1) / 30;
+
+        long justSkipped = 0;
+        while (bytes_to_skip > 0 && (justSkipped = sound.skip(bytes_to_skip)) > 0) {
+            bytes_to_skip -= justSkipped;
+        }
+
+        return sound;
     }
 }

@@ -19,7 +19,7 @@ public class FrameNumPresenter extends BasePresenter {
     }
     @Subscribe
     public void init_load(PrimarySlideEvent event) {
-//        System.out.println("update" + event.newValue);
+        System.out.println("update" + event.newValue);
         this.mView.updateNum(event.newValue);
 //        String filename = ;
 //        showRGB(filename);
