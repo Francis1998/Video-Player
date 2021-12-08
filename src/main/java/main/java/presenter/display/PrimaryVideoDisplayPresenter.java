@@ -12,6 +12,7 @@ import java.io.IOException;
 
 public class PrimaryVideoDisplayPresenter extends BasePresenter {
     PrimaryVideoDisplayView mView;
+    long startTime;
     public PrimaryVideoDisplayPresenter() {
         super();
     }
@@ -29,6 +30,11 @@ public class PrimaryVideoDisplayPresenter extends BasePresenter {
     public void init_load(PrimarySlideEvent event) {
         System.out.println("this is show rgb");
         String filename = DataManager.getInstance().getFilenameByFrameNo(event.newValue);
+//        if (event.newValue == 1){
+//            startTime=System.currentTimeMillis();
+//        } else if (event.newValue == 30){
+//            System.out.println(System.currentTimeMillis() - startTime);
+//        }
         this.mView.showRGB(filename);
 //        String filename = ;
 //        showRGB(filename);

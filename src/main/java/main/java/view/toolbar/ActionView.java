@@ -1,6 +1,11 @@
 package main.java.view.toolbar;
 
 import main.java.constants.Constants;
+import main.java.event.PauseEvent;
+import main.java.event.PrimarySlideEvent;
+import main.java.event.StartEvent;
+import main.java.event.StopEvent;
+import main.java.eventbus.EventBusCenter;
 import main.java.presenter.display.ActionPresenter;
 import main.java.view.base.BaseViewGroup;
 
@@ -46,13 +51,16 @@ public class ActionView extends BaseViewGroup {
     @Override
     public void mouseClicked(MouseEvent e){
         if (e.getSource() == this.playButton){
-            mPresenter.timerStart();
+//            mPresenter.timerStart();
+            EventBusCenter.post(new StartEvent());
             System.out.println("playButton");
         } else if (e.getSource() == this.pauseButton){
-            mPresenter.timerPause();
+            EventBusCenter.post(new PauseEvent());
+//            mPresenter.timerPause();
             System.out.println("pauseButton");
         } else if (e.getSource() == this.stopButton){
-            mPresenter.timerStop();
+            EventBusCenter.post(new StopEvent());
+//            mPresenter.timerStop();
             System.out.println("stopButton");
         } else if (e.getSource() == this.importPrimary){
             onOpenFile();
