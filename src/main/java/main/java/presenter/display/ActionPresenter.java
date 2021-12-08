@@ -1,7 +1,11 @@
 package main.java.presenter.display;
 
+import com.google.common.eventbus.Subscribe;
 import main.java.data.DataManager;
+import main.java.event.PauseEvent;
 import main.java.event.PrimarySlideEvent;
+import main.java.event.StartEvent;
+import main.java.event.StopEvent;
 import main.java.eventbus.EventBusCenter;
 import main.java.presenter.base.BasePresenter;
 import main.java.view.toolbar.ActionView;
@@ -30,7 +34,8 @@ public class ActionPresenter extends BasePresenter {
 //            EventBusCenter.post(new SecondarySlideEvent(type, 1));
 //        }
     }
-    public void timerStart(){
+    @Subscribe
+    public void timerStart(StartEvent event){
         if (timer != null){
             timer.cancel();
         }
@@ -40,7 +45,7 @@ public class ActionPresenter extends BasePresenter {
             @Override
             public void run() {
                 if(DataManager.getInstance().currFrame<=number){
-                    System.out.println(DataManager.getInstance().currFrame);
+//                    System.out.println(DataManager.getInstance().currFrame);
                     EventBusCenter.post(new PrimarySlideEvent(DataManager.getInstance().currFrame));
                 } else {
                     DataManager.getInstance().currFrame = 1;
@@ -52,13 +57,15 @@ public class ActionPresenter extends BasePresenter {
         timer.schedule(task, 0,33L);
     }
 
-    public void timerPause(){
+    @Subscribe
+    public void timerPause(PauseEvent event){
         if (timer != null){
             timer.cancel();
         }
     }
 
-    public void timerStop(){
+    @Subscribe
+    public void timerStop(StopEvent event){
         if (timer != null){
             DataManager.getInstance().currFrame = 1;
             timer.cancel();
