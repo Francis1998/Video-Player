@@ -42,7 +42,7 @@ public class PrimaryVideoDisplayPresenter extends BasePresenter {
                 while (true) {
                     if (isJumped) {
                         DataManager.getInstance().initAudio();
-                        DataManager.getInstance().audio_video_offset = (jump_event.targetFrame-1) * (44100/30);
+                        DataManager.getInstance().audio_video_offset = jump_event.targetFrame-1;
                         cur_off = (jump_event.targetFrame-1) * (DataManager.getInstance().bytes_per_video_frame / 4);
                         off = 0;
                         isJumped = false;
