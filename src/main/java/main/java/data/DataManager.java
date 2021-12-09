@@ -147,6 +147,7 @@ public class DataManager implements IDataManager {
     }
 
     public void initAudio() {
+        audio_video_offset = 0;
         String audio_path = primaryVideoPathBase + audioExtension;
 
         try {
