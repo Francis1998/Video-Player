@@ -43,7 +43,7 @@ public class DataManager implements IDataManager {
     public byte[] audio_data = new byte[44100*4*60*5];
     public AudioFormat audioFormat;
     public SourceDataLine audio_play_line;
-    public int audio_freq_slow = 120;
+    public int audio_freq_slow = 0;
     public int audio_video_offset = 0;
 
     public List<Link> LinkData = null;
