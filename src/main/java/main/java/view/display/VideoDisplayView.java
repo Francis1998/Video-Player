@@ -1,6 +1,7 @@
 package main.java.view.display;
 
 import main.java.constants.DimensionConstants;
+import main.java.constants.LiteralConstants;
 import main.java.data.DataManager;
 import main.java.data.Link;
 import main.java.event.JumpEvent;
@@ -8,6 +9,7 @@ import main.java.event.PrimarySlideEvent;
 import main.java.eventbus.EventBusCenter;
 import main.java.presenter.display.VideoDisplayPresenter;
 import main.java.util.ImgUtil;
+import main.java.util.StringUtil;
 import main.java.view.base.BaseViewGroup;
 
 import javax.swing.*;
@@ -53,9 +55,11 @@ public class VideoDisplayView extends BaseViewGroup {
         String curKey = DataManager.getInstance().getPrimaryVideoPathBase() + DataManager.getInstance().currFrame;
         if (DataManager.getInstance().frameLinkMap.containsKey(curKey)) {
             for (Link l : DataManager.getInstance().frameLinkMap.get(curKey)) {
+                if (DataManager.getInstance().currFrame == l.targetFrame &&
+                        StringUtil.equal(DataManager.getInstance().getPrimaryVideoPathBase(), l.targetFilePathBase)) continue;
                 if (e.getX() >= l.box.x && e.getX() <= l.box.x + l.box.width && e.getY() >= l.box.y && e.getY() <= l.box.y + l.box.height) {
                     DataManager.getInstance().setPrimaryVideo(l.targetFilePathBase);
-                    // DataManager.getInstance().initAudio();
+                    DataManager.getInstance().getLinkListByFile(l.targetFilePathBase + LiteralConstants.suffixJson);
                     EventBusCenter.post(new PrimarySlideEvent(l.targetFrame));
                     EventBusCenter.post(new JumpEvent(l.targetFilePathBase, l.targetFrame));
                     DataManager.getInstance().currFrame = l.targetFrame;

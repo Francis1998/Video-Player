@@ -2,6 +2,7 @@ package main.java.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import main.java.constants.LiteralConstants;
 import org.apache.commons.io.FileUtils;
 import javax.sound.sampled.*;
 import java.io.*;
@@ -83,20 +84,21 @@ public class DataManager implements IDataManager {
     }
 
     @Override
-    public List<Link> getLinkListByFile(String filename) {
+    public void getLinkListByFile(String filename) {
         try {
             Gson gson = new Gson();
             File file = new File(filename);
             String content = FileUtils.readFileToString(file);
             Link[] tempLinkList = gson.fromJson(content, Link[].class); // contains the whole reviews list
             LinkData = Arrays.asList(tempLinkList);
+            setPrimaryVideo(DataManager.getInstance().LinkData.get(0).sourceFilePathBase);
         } catch (FileNotFoundException fileNotFoundException) {
-            fileNotFoundException.printStackTrace();
+            System.out.println(LiteralConstants.fileNotFoundException);
         } catch (IOException exception) {
             exception.printStackTrace();
         }
         listLinkToMap();
-        return LinkData;
+        LinkData = new ArrayList<>();
     }
 
     @Override
@@ -139,7 +141,7 @@ public class DataManager implements IDataManager {
             audio_stream = AudioSystem.getAudioInputStream(new File(audio_path));
             // read audio stream
             audio_stream.read(audio_data, 0, audio_data.length);
-            System.out.println("load success");
+            System.out.println("audio load success");
             // update source data line
             AudioFormat formatIn = audio_stream.getFormat();
             audioFormat = new AudioFormat(formatIn.getSampleRate() - audio_freq_slow, formatIn.getSampleSizeInBits(), formatIn.getChannels(), true, formatIn.isBigEndian());

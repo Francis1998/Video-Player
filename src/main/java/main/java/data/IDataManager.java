@@ -18,6 +18,6 @@ public interface IDataManager {
 
     String getFilenameByFrameNo(int frame);
 
-    Object getLinkListByFile(String filename) throws FileNotFoundException;
+    void getLinkListByFile(String filename) throws FileNotFoundException;
 
 }
