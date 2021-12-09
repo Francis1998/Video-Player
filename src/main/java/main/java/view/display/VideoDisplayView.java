@@ -51,13 +51,13 @@ public class VideoDisplayView extends BaseViewGroup {
     @Override
     public void mouseClicked(MouseEvent e) {
         super.mouseClicked(e);
-        System.out.println("click here");
         String curKey = DataManager.getInstance().getPrimaryVideoPathBase() + DataManager.getInstance().currFrame;
         if (DataManager.getInstance().frameLinkMap.containsKey(curKey)) {
             for (Link l : DataManager.getInstance().frameLinkMap.get(curKey)) {
                 if (DataManager.getInstance().currFrame == l.targetFrame &&
                         StringUtil.equal(DataManager.getInstance().getPrimaryVideoPathBase(), l.targetFilePathBase)) continue;
                 if (e.getX() >= l.box.x && e.getX() <= l.box.x + l.box.width && e.getY() >= l.box.y && e.getY() <= l.box.y + l.box.height) {
+                    System.out.println("log: " + l);
                     DataManager.getInstance().setPrimaryVideo(l.targetFilePathBase);
                     DataManager.getInstance().getLinkListByFile(l.targetFilePathBase + LiteralConstants.suffixJson);
                     EventBusCenter.post(new PrimarySlideEvent(l.targetFrame));

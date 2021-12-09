@@ -141,7 +141,6 @@ public class DataManager implements IDataManager {
             audio_stream = AudioSystem.getAudioInputStream(new File(audio_path));
             // read audio stream
             audio_stream.read(audio_data, 0, audio_data.length);
-            System.out.println("audio load success");
             // update source data line
             AudioFormat formatIn = audio_stream.getFormat();
             audioFormat = new AudioFormat(formatIn.getSampleRate() - audio_freq_slow, formatIn.getSampleSizeInBits(), formatIn.getChannels(), true, formatIn.isBigEndian());
