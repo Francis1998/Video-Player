@@ -20,7 +20,4 @@ public interface IDataManager {
 
     Object getLinkListByFile(String filename) throws FileNotFoundException;
 
-
-
-    // TODO: DataManager has lots of functions, this is just a demo.
 }

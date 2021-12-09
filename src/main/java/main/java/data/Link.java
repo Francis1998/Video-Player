@@ -8,6 +8,7 @@ public class Link {
     public String targetFilePathBase;
     public int duration = 10;// unit is frame
     public BoundingBox box;
+
     public Link(long ID,
                 int sourceFrame,
                 String sourceFilePathBase,
@@ -21,13 +22,9 @@ public class Link {
         this.targetFilePathBase = targetFilePathBase;
         this.box = box;
     }
+
     public String getSourceFilePathBase(){
         return sourceFilePathBase;
     }
-
-    public void toScreen(){
-        System.out.println(ID + " " + sourceFrame + " " + sourceFilePathBase + " " + targetFrame + " " + targetFilePathBase);
-    }
-
 
 }

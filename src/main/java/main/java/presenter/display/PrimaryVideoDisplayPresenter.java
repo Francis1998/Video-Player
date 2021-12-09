@@ -6,15 +6,10 @@ import main.java.event.*;
 import main.java.presenter.base.BasePresenter;
 import main.java.view.display.PrimaryVideoDisplayView;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.IOException;
-
 public class PrimaryVideoDisplayPresenter extends BasePresenter {
     PrimaryVideoDisplayView mView;
-    long startTime;
     public Thread thread;
+
     public PrimaryVideoDisplayPresenter() {
         super();
     }
@@ -37,13 +32,13 @@ public class PrimaryVideoDisplayPresenter extends BasePresenter {
                 int len = DataManager.getInstance().audio_data.length;
 
                 int off = 0;
-                int step = DataManager.getInstance().bytes_per_video_frame*15;
+                int step = DataManager.getInstance().bytes_per_video_frame * 15;
 
                 while (true) {
                     if (isJumped) {
                         DataManager.getInstance().initAudio();
-                        DataManager.getInstance().audio_video_offset = jump_event.targetFrame-1;
-                        cur_off = (jump_event.targetFrame-1) * (DataManager.getInstance().bytes_per_video_frame / 4);
+                        DataManager.getInstance().audio_video_offset = jump_event.targetFrame - 1;
+                        cur_off = (jump_event.targetFrame - 1) * (DataManager.getInstance().bytes_per_video_frame / 4);
                         off = 0;
                         isJumped = false;
                     }
@@ -84,23 +79,14 @@ public class PrimaryVideoDisplayPresenter extends BasePresenter {
 
     @Subscribe
     public void init_load(PrimarySlideEvent event) {
-
         String filename = DataManager.getInstance().getFilenameByFrameNo(event.newValue);
-//        if (event.newValue == 1){
-//            startTime=System.currentTimeMillis();
-//        } else if (event.newValue == 30){
-//            System.out.println(System.currentTimeMillis() - startTime);
-//        }
         DataManager.getInstance().currFrame = event.newValue;
         this.mView.showRGB(filename);
-//        System.out.println("this is show rgb");
-//        String filename = ;
-//        showRGB(filename);
     }
 
     @Subscribe
     public void soundOnStart(StartEvent event) {
-        if (!isInitiated){
+        if (!isInitiated) {
             thread.start();
             isInitiated = true;
         }

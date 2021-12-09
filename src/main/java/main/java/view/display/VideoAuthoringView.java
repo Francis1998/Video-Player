@@ -9,6 +9,7 @@ public class VideoAuthoringView extends JPanel {
     PrimaryVideoDisplayView mPrimaryVideoDisplayView;
     ButtonControlView mButtonControlView;
     FrameNumView mFrameNumView;
+
     public VideoAuthoringView() {
         super();
         this.setBackground(Color.lightGray);

@@ -5,7 +5,6 @@ public class JumpEvent {
     public Integer targetFrame = null;
 
     public JumpEvent(String targetFilePathBase, Integer targetFrame) {
-//        this.source = source;
         this.targetFilePathBase = targetFilePathBase;
         this.targetFrame = targetFrame;
     }
