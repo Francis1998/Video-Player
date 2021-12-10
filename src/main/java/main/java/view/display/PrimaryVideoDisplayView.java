@@ -1,5 +1,6 @@
 package main.java.view.display;
 
+import main.java.constants.DimensionConstants;
 import main.java.presenter.display.PrimaryVideoDisplayPresenter;
 import main.java.view.base.BaseViewGroup;
 
@@ -15,8 +16,8 @@ public class PrimaryVideoDisplayView extends BaseViewGroup {
         this.setBackground(Color.lightGray);
         mPresenter = new PrimaryVideoDisplayPresenter(this);
         mVideoDisplayView = new VideoDisplayView(1);
-        mVideoDisplayView.setBackground(Color.BLACK);
-        mVideoDisplayView.setPreferredSize(new Dimension(400, 300));
+//        mVideoDisplayView.setBackground(Color.GREEN);
+        mVideoDisplayView.setPreferredSize(new Dimension(DimensionConstants.IMG_WIDTH, DimensionConstants.IMG_HEIGHT));
         this.add(mVideoDisplayView, BorderLayout.CENTER);
     }
 

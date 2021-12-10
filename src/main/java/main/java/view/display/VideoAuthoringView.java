@@ -16,7 +16,7 @@ public class VideoAuthoringView extends JPanel {
         mButtonControlView = new ButtonControlView();
         mFrameNumView = new FrameNumView();
         mPrimaryVideoDisplayView = new PrimaryVideoDisplayView();
-        mPrimaryVideoDisplayView.setPreferredSize(new Dimension(400, 350));
+//        mPrimaryVideoDisplayView.setPreferredSize(new Dimension(400, 350));
 
         this.add(mPrimaryVideoDisplayView, BorderLayout.CENTER);
         this.add(mButtonControlView, BorderLayout.EAST);

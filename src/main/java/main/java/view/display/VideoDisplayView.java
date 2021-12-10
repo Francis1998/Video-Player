@@ -16,14 +16,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VideoDisplayView extends BaseViewGroup {
     VideoDisplayPresenter mPresenter;
     BufferedImage imgOne;
     ImageIcon imageIconOne;
-
     Integer curFrame = 1;
-    JLabel label;
+    JLabel imgLabel;
+    List<BoundingBoxView> boxViews = new ArrayList<>();
+    JLayeredPane layeredPane = new JLayeredPane();
 
     public VideoDisplayView(Integer curFrame) {
         super();
@@ -32,20 +35,52 @@ public class VideoDisplayView extends BaseViewGroup {
     }
 
     public void createUI() {
+        this.setLayout(null);
         this.setPreferredSize(new Dimension(DimensionConstants.IMG_WIDTH, DimensionConstants.IMG_HEIGHT));
         mPresenter = new VideoDisplayPresenter(this);
         imgOne = new BufferedImage(DimensionConstants.IMG_WIDTH, DimensionConstants.IMG_HEIGHT, BufferedImage.TYPE_INT_RGB);
         imageIconOne = new ImageIcon(imgOne);
-        label = new JLabel(imageIconOne);
-        label.addMouseListener(this);
-        add(label, BorderLayout.CENTER);
-
+        imgLabel = new JLabel(imageIconOne);
+        imgLabel.setBackground(Color.ORANGE);
+        imgLabel.setBounds(0, 0, DimensionConstants.IMG_WIDTH, DimensionConstants.IMG_HEIGHT);
+        imgLabel.addMouseListener(this); //Todo: delete or not?
+        layeredPane.add(imgLabel, 0);
+        layeredPane.setBounds(0, 0, DimensionConstants.IMG_WIDTH, DimensionConstants.IMG_HEIGHT);
+        layeredPane.setLayer(imgLabel, 0);
+        add(layeredPane);
+        this.setPreferredSize(new Dimension(DimensionConstants.IMG_WIDTH, DimensionConstants.IMG_HEIGHT));
     }
 
     public void showRGB(String filename) {
         ImgUtil.readImageRGB(filename, imgOne);
-        this.revalidate();
-        this.repaint();
+        layeredPane.revalidate();
+        layeredPane.repaint();
+    }
+
+    public BoundingBoxView createBoxView(Link link) {
+        BoundingBoxView view = new BoundingBoxView(link);
+        return view;
+    }
+
+    private void updateSelectedFrame() {
+        for (BoundingBoxView view : this.boxViews) {
+            view.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+        }
+    }
+
+    public void refreshBoundingBox(int currFrame) {
+        for (JPanel view : boxViews) layeredPane.remove(view);
+        boxViews.clear();
+        List<Link> links = DataManager.getInstance().getLinkListByFrameNo(currFrame);
+        for (Link link : links) {
+            boxViews.add(createBoxView(link));
+        }
+        for (int i = 1; i <= boxViews.size(); i++) {
+            layeredPane.add(boxViews.get(i - 1), i, i);
+        }
+        updateSelectedFrame();
+        layeredPane.invalidate();
+        layeredPane.repaint();
     }
 
     @Override
