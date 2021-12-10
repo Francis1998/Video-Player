@@ -1,6 +1,7 @@
 package main.java.presenter.display;
 
 import com.google.common.eventbus.Subscribe;
+import main.java.constants.LiteralConstants;
 import main.java.data.DataManager;
 import main.java.event.PauseEvent;
 import main.java.event.PrimarySlideEvent;
@@ -80,16 +81,22 @@ public class ActionPresenter extends BasePresenter {
                     timer.cancel();
                 }
                 // System.out.println("audio video offset: " + DataManager.getInstance().audio_video_offset);
-                if (DataManager.getInstance().currFrame - (DataManager.getInstance().audio_play_line.getFramePosition() / (DataManager.getInstance().bytes_per_video_frame / 4) + DataManager.getInstance().audio_video_offset) >= 3) {
-                    delay = 40L;
-                } else if ((DataManager.getInstance().audio_play_line.getFramePosition() / (DataManager.getInstance().bytes_per_video_frame / 4) + DataManager.getInstance().audio_video_offset) - DataManager.getInstance().currFrame >= 1) {
-                    delay = 20L;
-                } else {
-                    delay = 30L;
-                }
+                videoSpeedFeedback();
                 DataManager.getInstance().currFrame++;
                 schedule();
             }
         }
     }
+
+    public void videoSpeedFeedback(){
+        int diffSpeed = DataManager.getInstance().getDiffBetweenVideoAndAudio();
+        if (diffSpeed >= LiteralConstants.videoQuickThreshold) {
+            delay = Math.round((diffSpeed * 0.1 + 1) * LiteralConstants.videoBasicDelay);
+        } else if (diffSpeed <= LiteralConstants.audioQuickThreshold) {
+            delay = Math.round(LiteralConstants.videoBasicDelay/(Math.abs(diffSpeed) * 0.1 + 1));
+        } else {
+            delay = LiteralConstants.videoBasicDelay;
+        }
+    }
+
 }

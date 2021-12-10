@@ -8,4 +8,7 @@ public class LiteralConstants {
     public static final String stopPicFilePath = "./photo/stop.png";
     public static final String suffixJson = ".json";
     public static final String fileNotFoundException = "fileNotFoundException";
+    public static final int audioQuickThreshold = -1;
+    public static final int videoQuickThreshold = 3;
+    public static final int videoBasicDelay = 30;
 }

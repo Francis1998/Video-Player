@@ -151,4 +151,8 @@ public class DataManager implements IDataManager {
             System.out.println("Exception thrown:" + e);
         }
     }
+
+    public int getDiffBetweenVideoAndAudio(){
+        return currFrame - (audio_play_line.getFramePosition() / (bytes_per_video_frame / 4) + audio_video_offset);
+    }
 }
