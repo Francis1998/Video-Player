@@ -2,6 +2,7 @@ package main.java.view.toolbar;
 
 import main.java.constants.LiteralConstants;
 import main.java.event.PauseEvent;
+import main.java.event.ShowEvent;
 import main.java.event.StartEvent;
 import main.java.event.StopEvent;
 import main.java.eventbus.EventBusCenter;
@@ -17,7 +18,8 @@ public class ActionView extends BaseViewGroup {
     JButton playButton = null;
     JButton pauseButton = null;
     JButton stopButton = null;
-    JButton importPrimary = null;
+    JButton importPrimaryButton = null;
+    JButton showBoundingBoxButton = null;
     ActionPresenter mPresenter = null;
 
     public ActionView() {
@@ -35,14 +37,19 @@ public class ActionView extends BaseViewGroup {
         this.playButton = new JButton(playIcon);
         this.pauseButton = new JButton(pauseIcon);
         this.stopButton = new JButton(stopIcon);
-        this.importPrimary = new JButton(LiteralConstants.importP);
+        this.importPrimaryButton = new JButton(LiteralConstants.importP);
+        this.importPrimaryButton.setPreferredSize(new Dimension(50,50));
+        this.showBoundingBoxButton = new JButton(LiteralConstants.showBoundingBox);
+        this.showBoundingBoxButton.setPreferredSize(new Dimension(50,50));
         this.playButton.addMouseListener(this);
         this.pauseButton.addMouseListener(this);
         this.stopButton.addMouseListener(this);
-        this.importPrimary.addMouseListener(this);
+        this.importPrimaryButton.addMouseListener(this);
+        this.showBoundingBoxButton.addMouseListener(this);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.add(this.importPrimary, BorderLayout.CENTER);
+        this.add(this.importPrimaryButton, BorderLayout.CENTER);
+        this.add(this.showBoundingBoxButton, BorderLayout.CENTER);
         this.add(this.playButton, BorderLayout.CENTER);
         this.add(this.pauseButton, BorderLayout.CENTER);
         this.add(this.stopButton, BorderLayout.CENTER);
@@ -60,8 +67,15 @@ public class ActionView extends BaseViewGroup {
         } else if (e.getSource() == this.stopButton) {
             EventBusCenter.post(new StopEvent());
             System.out.println("stopButton");
-        } else if (e.getSource() == this.importPrimary) {
+        } else if (e.getSource() == this.importPrimaryButton) {
             onOpenFile();
+        } else if (e.getSource() == this.showBoundingBoxButton){
+            EventBusCenter.post(new ShowEvent());
+            if (showBoundingBoxButton.getText().equals(LiteralConstants.showBoundingBox)){
+                showBoundingBoxButton.setText(LiteralConstants.hideBoundingBox);
+            }else{
+                showBoundingBoxButton.setText(LiteralConstants.showBoundingBox);
+            }
         }
     }
 

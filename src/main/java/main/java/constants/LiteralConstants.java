@@ -2,6 +2,8 @@ package main.java.constants;
 
 public class LiteralConstants {
     public static final String importP = "Import";
+    public static final String showBoundingBox = "Show";
+    public static final String hideBoundingBox = "Hide";
     public static final String hyperVideoPlayer = "Hypervideo Player";
     public static final String playPicFilePath = "./photo/play.png";
     public static final String pausePicFilePath = "./photo/pause.png";

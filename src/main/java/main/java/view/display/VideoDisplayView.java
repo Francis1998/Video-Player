@@ -1,11 +1,13 @@
 package main.java.view.display;
 
+import com.google.common.eventbus.Subscribe;
 import main.java.constants.DimensionConstants;
 import main.java.constants.LiteralConstants;
 import main.java.data.DataManager;
 import main.java.data.Link;
 import main.java.event.JumpEvent;
 import main.java.event.PrimarySlideEvent;
+import main.java.event.ShowEvent;
 import main.java.eventbus.EventBusCenter;
 import main.java.presenter.display.VideoDisplayPresenter;
 import main.java.util.ImgUtil;
@@ -27,7 +29,7 @@ public class VideoDisplayView extends BaseViewGroup {
     JLabel imgLabel;
     List<BoundingBoxView> boxViews = new ArrayList<>();
     JLayeredPane layeredPane = new JLayeredPane();
-
+    boolean IsShow = false;
     public VideoDisplayView(Integer curFrame) {
         super();
         this.curFrame = curFrame;
@@ -68,19 +70,48 @@ public class VideoDisplayView extends BaseViewGroup {
         }
     }
 
+    public void showBoundingbox(ShowEvent event){
+        System.out.println("show click");
+        if (!IsShow){
+            IsShow = true;
+        }
+        else{
+            IsShow = false;
+        }
+        refreshBoundingBox(DataManager.getInstance().currFrame);
+    }
+
+    public void continueRefreshBoundingBox(PrimarySlideEvent event){
+        refreshBoundingBox(event.newValue);
+    }
+
     public void refreshBoundingBox(int currFrame) {
-        for (JPanel view : boxViews) layeredPane.remove(view);
-        boxViews.clear();
-        List<Link> links = DataManager.getInstance().getLinkListByFrameNo(currFrame);
-        for (Link link : links) {
-            boxViews.add(createBoxView(link));
+        if (!IsShow){
+            for (JPanel view : boxViews) layeredPane.remove(view);
+            boxViews.clear();
+            layeredPane.invalidate();
+            layeredPane.repaint();
+        } else {
+            for (JPanel view : boxViews) layeredPane.remove(view);
+            boxViews.clear();
+            List<Link> links = DataManager.getInstance().getLinkListByFrameNo(currFrame);
+            if (links == null){
+                layeredPane.invalidate();
+                layeredPane.repaint();
+                return;
+            }
+            for (Link link : links) {
+                boxViews.add(createBoxView(link));
+            }
+            for (int i = 1; i <= boxViews.size(); i++) {
+                layeredPane.add(boxViews.get(i - 1), i, i);
+            }
+            updateSelectedFrame();
+            layeredPane.invalidate();
+            layeredPane.repaint();
         }
-        for (int i = 1; i <= boxViews.size(); i++) {
-            layeredPane.add(boxViews.get(i - 1), i, i);
-        }
-        updateSelectedFrame();
-        layeredPane.invalidate();
-        layeredPane.repaint();
+//        layeredPane.invalidate();
+//        layeredPane.repaint();
     }
 
     @Override

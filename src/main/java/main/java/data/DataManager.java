@@ -61,7 +61,7 @@ public class DataManager implements IDataManager {
 
     @Override
     public List<Link> getLinkListByFrameNo(int frame) {
-        return null;
+        return frameLinkMap.get(primaryVideoPathBase + frame);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class DataManager implements IDataManager {
             String content = FileUtils.readFileToString(file);
             Link[] tempLinkList = gson.fromJson(content, Link[].class); // contains the whole reviews list
             LinkData = Arrays.asList(tempLinkList);
-            setPrimaryVideo(DataManager.getInstance().LinkData.get(0).sourceFilePathBase);
+            setPrimaryVideo(LinkData.get(0).sourceFilePathBase);
         } catch (FileNotFoundException fileNotFoundException) {
             System.out.println(LiteralConstants.fileNotFoundException);
         } catch (IOException exception) {
